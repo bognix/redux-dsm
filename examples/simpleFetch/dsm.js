@@ -7,6 +7,19 @@ export const STATUS = {
     ERROR: 'error'
 };
 
+export const myReducer = (state = {}, {type, payload}) => {
+    switch (type) {
+        case 'List::FETCH_COMMITS::FETCH':
+            return Object.assign({}, state, { loading: true});
+        case 'List::FETCH_COMMITS::HANDLE_SUCCESS':
+            return Object.assign({}, state, { messages: payload.messages});
+        case 'List::FETCH_COMMITS::HANDLE_ERROR':
+            return Object.assign({}, state, { error: true} );
+        default:
+            return state;
+    }
+};
+
 const fetchingStates = [
     ['initialize', STATUS.IDLE,
         ['fetch', STATUS.FETCHING,
@@ -24,7 +37,8 @@ const fetchingStates = [
 export const listDSM = dsm({
     component: 'List',
     description: 'Fetch Commits',
-    actionStates: fetchingStates
+    actionStates: fetchingStates,
+    customReducer: myReducer
 });
 
 export const actionCreators = listDSM.actionCreators;

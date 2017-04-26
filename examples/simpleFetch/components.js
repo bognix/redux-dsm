@@ -29,25 +29,12 @@ const ListItem = ({children}) => (
 );
 
 const mapStateToProps = (state) => {
-    const {list: {payload: {messages} = {}, status} = {}} = state;
+    const {list: { messages, error, loading } = {}} = state;
 
-    switch (status) {
-        case STATUS.IDLE:
-        case STATUS.SUCCESS:
-            return {
-                messages
-            };
-        case STATUS.ERROR: {
-            return {
-                error: true
-            }
-        }
-        case STATUS.FETCHING:
-        default:
-            return {
-                loading: true
-            }
-
+    return {
+        messages,
+        error,
+        loading
     }
 };
 

@@ -14,7 +14,7 @@ export const fetchCommits = () => {
                     };
                 });
 
-                return dispatch(actionCreators.reportSuccess()) && dispatch(actionCreators.handleSuccess({messages}));
+                return dispatch(actionCreators.handleSuccess({messages}));
             }).catch((error) => dispatch(actionCreators.reportError({error})) && dispatch(actionCreators.handleError({error})));
     };
 };

@@ -22,13 +22,8 @@ const getStates = (graph, initialMemo = [], parentStatus = defaultStatus) => (
 
 const formatConstant = text => snakeCase(text).toUpperCase();
 
-const empty = {
-  type: 'empty'
-};
-
 const defaultState = {
-  status: defaultStatus,
-  payload: empty
+  status: defaultStatus
 };
 
 const createReducer = (defaultState, reducerMap) => {
@@ -55,7 +50,8 @@ const dsm = ({
   component = '',
   description = '',
   delimiter = '::',
-  actionStates = []
+  actionStates = [],
+  passedReducer = state => state
 }) => {
   const states = [...getStates(actionStates)];
 
@@ -82,13 +78,13 @@ const dsm = ({
 
       if (state.status === a.parentStatus && action.type === a.action) {
         const { status } = a;
-        const { payload } = action;
 
-        return Object.assign({}, state, {
-          status,
-          payload
-        });
+        return passedReducer(Object.assign({}, state, {
+          status
+        }), action);
       }
+
+      console.warn(`Unexpected state transition. Can't transition from: ${state.status}, to ${a.parentStatus}`);
       return state;
     };
     return map;
